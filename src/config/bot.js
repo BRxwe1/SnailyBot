@@ -648,31 +648,4 @@ export function getRandomColor() {
   return colors[Math.floor(Math.random() * colors.length)];
 }
 
-const { Client, GatewayIntentBits } = require('discord.js');
-const axios = require('axios');
-
-const client = new Client({
-    intents: [
-        GatewayIntentBits.Guilds,
-        GatewayIntentBits.GuildMessages,
-        GatewayIntentBits.MessageContent
-    ]
-});
-
-const SOURCE_CHANNEL_ID = '1510247702284341358';
-const WEBHOOK_URL = 'https://discord.com/api/webhooks/1540037457347878914/w9P4vskH-uX97C82xSsDuVxeU-HjIkwsVQAkEGbT_l9gfX3iADrR8vRNUX00a6ApVZmz';
-
-client.on('messageCreate', async (message) => {
-    if (message.author.bot) return; // Ignore bots
-    if (message.channel.id !== SOURCE_CHANNEL_ID) return;
-
-    try {
-        await axios.post(WEBHOOK_URL, {
-            content: `${message.author.tag}: ${message.content}`,
-        });
-    } catch (error) {
-        console.error('Error forwarding message:', error);
-    }
-});
-
 export default botConfig;
